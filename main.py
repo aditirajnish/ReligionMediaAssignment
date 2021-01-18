@@ -1,22 +1,20 @@
-
 import pygame
 
 pygame.init()
-pygame.mixer.init()
 
-displayWidth = 1024
-displayHeight = 768
+largeFont = pygame.font.SysFont("timesnewromanttf", 115)
+mediumFont = pygame.font.SysFont("timesnewromanttf", 40)
+smallFont = pygame.font.SysFont("timesnewromanttf", 30)
 
-largeFont = pygame.font.SysFont("timesnewromanttf",115)
-mediumFont = pygame.font.SysFont("timesnewromanttf",70)
-smallFont = pygame.font.SysFont("timesnewromanttf",40)
+displayWidth = 800
+displayHeight = 600
 
 black = (0, 0, 0)
 white = (255, 255, 255)
 blue = (0, 0, 128)
 red = (200, 0, 0)
 green = (0, 200, 0)
-yellow = (255,255,0)
+yellow = (255, 255, 0)
 orange = (255, 165, 0)
 purple = (146, 55, 226)
 brightRed = (255, 0, 0)
@@ -24,23 +22,26 @@ brightGreen = (0, 255, 0)
 lightBlue = (173, 238, 255)
 darkBlue = (43, 166, 210)
 
-gameDisplay = pygame.display.set_mode((displayWidth,displayHeight))
+gameDisplay = pygame.display.set_mode((displayWidth, displayHeight))
 pygame.display.set_caption('The Story of the Call Story--by Aditi & Jess')
 clock = pygame.time.Clock()
-
-displayWidth = 1024
-displayHeight = 768
 
 score = 0
 prophet = "isaiah"
 prophet_nums = {"isaiah": 6, "jeremiah": 5, "ezekiel": 6}
 num = -1
 
-complete = {"structure": False, "isaiah": False, "jeremiah": False, "ezekiel": False}
+complete = {
+    "structure": False,
+    "isaiah": False,
+    "jeremiah": False,
+    "ezekiel": False
+}
+
 
 def text_box(text, font, colour):
-   textSurf = font.render(text, True, colour)
-   return textSurf, textSurf.get_rect()
+    textSurf = font.render(text, True, colour)
+    return textSurf, textSurf.get_rect()
 
 
 def load_image(imagename, sizex, sizey):
@@ -49,19 +50,17 @@ def load_image(imagename, sizex, sizey):
     return image
 
 
-def button(msg,x,y,w,h,ic,ac,action=None):
+def button(msg, x, y, w, h, ic, ac, action=None):
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
     if x + w > mouse[0] > x and y + h > mouse[1] > y:
-        pygame.draw.rect(gameDisplay, ac,(x,y,w,h), 1)
+        pygame.draw.rect(gameDisplay, ac, (x, y, w, h), 1)
         if click[0] and action != None:
-            pygame.mixer.music.load('click_sound.wav')
-            pygame.mixer.music.play(0)
             action()
     else:
-        pygame.draw.rect(gameDisplay, ic,(x,y,w,h), 1)
+        pygame.draw.rect(gameDisplay, ic, (x, y, w, h), 1)
     textSurf, textRect = text_box(msg, smallFont, black)
-    textRect.center = (x + w/2, y + h/2)
+    textRect.center = (x + w / 2, y + h / 2)
     gameDisplay.blit(textSurf, textRect)
 
 
@@ -78,7 +77,7 @@ def check_quit():
 
 def display_score():
     textSurf, textRect = text_box(str(score), smallFont, black)
-    textRect.center = (125, 747)
+    textRect.center = (95, 582)
     gameDisplay.blit(textSurf, textRect)
 
 
@@ -93,7 +92,7 @@ def display_background(image_name):
 
 
 def display_star(position):
-    star = load_image("star.png", 90, 89)
+    star = load_image("star.png", 70, 65)
     gameDisplay.blit(star, position)
 
 
@@ -103,31 +102,35 @@ def game_intro():
 
         display_background('main_page.png')
 
-        button("",35,370,250,280,black,darkBlue,structure0)
-        button("",670,330,260,80,black,brightRed,setisaiah)
-        button("",755,445,260,80,black,orange,setjeremiah)
-        button("",708,562,260,80,black,green,setezekiel)
+        button("",25,287,200,220, black, darkBlue, structure0)
+        button("", 524, 256, 200, 63, black, brightRed, setisaiah)
+        button("", 592, 348, 200, 63, black, orange, setjeremiah)
+        button("", 555, 440, 200, 63, black, green, setezekiel)
         if complete["structure"]:
-            display_star((260, 590))
+            display_star((200, 470))
         if complete["isaiah"]:
-            display_star((570, 320))
+            display_star((445, 255))
         if complete["jeremiah"]:
-            display_star((660, 430))
+            display_star((510, 345))
         if complete["ezekiel"]:
-            display_star((610, 550))
+            display_star((475, 435))
         if all(value for value in complete.values()):
-            congratsSurf, congratsRect = text_box("Congratulations! You finished the game :)", mediumFont, white)
-            congratsRect.center = (displayWidth/2, 720)
+            congratsSurf, congratsRect = text_box(
+                "Congratulations! You finished the game :)", mediumFont, white)
+            congratsRect.center = (displayWidth / 2, 565)
             gameDisplay.blit(congratsSurf, congratsRect)
             final_score = round((score + 1) / (30) * 100)
-            congratsSurf, congratsRect = text_box(f"Final score: {final_score}%", smallFont, white)
-            congratsRect.center = (displayWidth / 2, 755)
+            congratsSurf, congratsRect = text_box(
+                f"Final score: {final_score}%", smallFont, white)
+            congratsRect.center = (displayWidth / 2, 590)
             gameDisplay.blit(congratsSurf, congratsRect)
 
         pygame.display.update()
         clock.tick(15)
 
+
 total_score = 0
+
 
 def structure0():
     while True:
@@ -135,7 +138,7 @@ def structure0():
 
         display_background('structure_imgs/structure0.png')
         display_score()
-        button("", 788, 717, 235, 50, black, purple, structure1)
+        button("", 615, 560, 183, 40, black, purple, structure1)
 
         pygame.display.update()
         clock.tick(15)
@@ -158,7 +161,7 @@ def structure1():
         display_score()
 
         if complete:
-            button("", 788, 717, 235, 50, black, purple, structure2)
+            button("", 615, 560, 183, 40, black, purple, structure2)
         pygame.display.update()
         clock.tick(15)
 
@@ -179,7 +182,7 @@ def structure2():
         display_background(background)
         display_score()
         if complete:
-            button("", 788, 717, 235, 50, black, purple, structure3)
+            button("", 615, 560, 183, 40, black, purple, structure3)
 
         pygame.display.update()
         clock.tick(15)
@@ -219,7 +222,7 @@ def structure3():
         display_background(background)
         display_score()
         if complete:
-            button("", 788, 717, 235, 50, black, purple, structure4)
+            button("", 615, 560, 183, 40, black, purple, structure4)
 
         pygame.display.update()
         clock.tick(15)
@@ -241,7 +244,7 @@ def structure4():
         display_background(background)
         display_score()
         if complete:
-            button("", 788, 717, 235, 50, black, purple, structure5)
+            button("", 615, 560, 183, 40, black, purple, structure5)
 
         pygame.display.update()
         clock.tick(15)
@@ -263,7 +266,7 @@ def structure5():
         display_background(background)
         display_score()
         if complete:
-            button("", 788, 717, 235, 50, black, purple, structure6)
+            button("", 615, 560, 183, 40, black, purple, structure6)
 
         pygame.display.update()
         clock.tick(15)
@@ -277,8 +280,8 @@ def structure6():
 
         display_background(background)
         display_score()
-        button("", 527, 445, 220, 145, black, purple, structure6_correct)
-        button("", 760, 445, 220, 145, black, purple, structure6_incorrect)
+        button("", 412, 348, 173, 115, black, purple, structure6_correct)
+        button("", 593, 348, 173, 115, black, purple, structure6_incorrect)
 
         pygame.display.update()
         clock.tick(15)
@@ -292,7 +295,7 @@ def structure6_correct():
 
         display_background(background)
         display_score()
-        button("", 788, 717, 235, 50, black, purple, game_intro)
+        button("", 615, 560, 183, 40, black, purple, game_intro)
 
         pygame.display.update()
         clock.tick(15)
@@ -305,7 +308,7 @@ def structure6_incorrect():
 
         display_background(background)
         display_score()
-        button("", 788, 717, 235, 50, black, purple, game_intro)
+        button("", 615, 560, 183, 40, black, purple, game_intro)
 
         pygame.display.update()
         clock.tick(15)
@@ -356,10 +359,9 @@ def prophet_slide():
         display_background(f'{prophet}_imgs/{prophet}{num}.png')
         display_score()
         if complete and num <= 6:
-            button("", 788, 717, 235, 50, black, purple, next_slide_prophet)
+            button("", 615, 560, 183, 40, black, purple, next_slide_prophet)
 
         pygame.display.update()
         clock.tick(15)
-
 
 game_intro()
