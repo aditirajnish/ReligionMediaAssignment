@@ -3,3 +3,5 @@ This is a game created by me (Aditi Rajnish) and Jess Gosset for our Religion (H
 Jess and I wrote the story, and I coded and illustrated the game. 
 
 Play the game using this link: https://repl.it/@molecule/ReligionMediaAssignment
+
+If running the game in repl.it, please run it in the Code environment, minimizing all file/console side bars in order to fully view the game window.
